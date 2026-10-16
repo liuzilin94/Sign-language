@@ -1,0 +1,56 @@
+{
+  "total": 24,
+  "passed": 24,
+  "failed": 0,
+  "skipped": 0,
+  "errors": [],
+  "api_results": [
+    {
+      "endpoint": "/api/health",
+      "method": "GET",
+      "status": 200,
+      "time": 0
+    },
+    {
+      "endpoint": "/api/auth/register",
+      "method": "POST",
+      "status": 201,
+      "time": 0
+    },
+    {
+      "endpoint": "/api/auth/login",
+      "method": "POST",
+      "status": 200,
+      "time": 0
+    },
+    {
+      "endpoint": "/api/words",
+      "method": "GET",
+      "status": 200,
+      "time": 8.010149002075195
+    },
+    {
+      "endpoint": "/api/stats/overview",
+      "method": "GET",
+      "status": 200,
+      "time": 7.050514221191406
+    }
+  ],
+  "performance_results": [
+    {
+      "name": "词汇列表查询",
+      "avg_time_ms": 0.7454395294189453,
+      "pass": true
+    },
+    {
+      "name": "词汇序列化",
+      "avg_time_ms": 0.0,
+      "pass": true
+    },
+    {
+      "name": "批量学习记录查询",
+      "avg_time_ms": 5.718851089477539,
+      "pass": true
+    }
+  ]
+}

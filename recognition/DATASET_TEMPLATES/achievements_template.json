@@ -1,0 +1,274 @@
+{
+  "achievements": [
+    {
+      "id": 1,
+      "name": "初学者",
+      "description": "完成第一次手语学习",
+      "icon": "📚",
+      "target_value": 1,
+      "type": "learn"
+    },
+    {
+      "id": 2,
+      "name": "词汇新手",
+      "description": "学习 10 个手语词汇",
+      "icon": "📖",
+      "target_value": 10,
+      "type": "learn"
+    },
+    {
+      "id": 3,
+      "name": "词汇达人",
+      "description": "学习 50 个手语词汇",
+      "icon": "🎯",
+      "target_value": 50,
+      "type": "learn"
+    },
+    {
+      "id": 4,
+      "name": "词汇专家",
+      "description": "学习 100 个手语词汇",
+      "icon": "🏆",
+      "target_value": 100,
+      "type": "learn"
+    },
+    {
+      "id": 5,
+      "name": "词汇大师",
+      "description": "学习 200 个手语词汇",
+      "icon": "👑",
+      "target_value": 200,
+      "type": "learn"
+    },
+    {
+      "id": 6,
+      "name": "初次练习",
+      "description": "完成第一次手语练习",
+      "icon": "💪",
+      "target_value": 1,
+      "type": "practice"
+    },
+    {
+      "id": 7,
+      "name": "练习达人",
+      "description": "完成 50 次手语练习",
+      "icon": "🔥",
+      "target_value": 50,
+      "type": "practice"
+    },
+    {
+      "id": 8,
+      "name": "练习专家",
+      "description": "完成 100 次手语练习",
+      "icon": "⚡",
+      "target_value": 100,
+      "type": "practice"
+    },
+    {
+      "id": 9,
+      "name": "练习大师",
+      "description": "完成 300 次手语练习",
+      "icon": "🌟",
+      "target_value": 300,
+      "type": "practice"
+    },
+    {
+      "id": 10,
+      "name": "连续学习 3 天",
+      "description": "连续学习手语 3 天",
+      "icon": "📅",
+      "target_value": 3,
+      "type": "review"
+    },
+    {
+      "id": 11,
+      "name": "连续学习 7 天",
+      "description": "连续学习手语 7 天",
+      "icon": "🔥",
+      "target_value": 7,
+      "type": "review"
+    },
+    {
+      "id": 12,
+      "name": "连续学习 30 天",
+      "description": "连续学习手语 30 天",
+      "icon": "💎",
+      "target_value": 30,
+      "type": "review"
+    },
+    {
+      "id": 13,
+      "name": "每日打卡 7 天",
+      "description": "每日打卡连续 7 天",
+      "icon": "⭐",
+      "target_value": 7,
+      "type": "review"
+    },
+    {
+      "id": 14,
+      "name": "每日打卡 30 天",
+      "description": "每日打卡连续 30 天",
+      "icon": "🎖️",
+      "target_value": 30,
+      "type": "review"
+    },
+    {
+      "id": 15,
+      "name": "方言贡献者",
+      "description": "上传并通过审核 1 个方言手语",
+      "icon": "🌍",
+      "target_value": 1,
+      "type": "contribution"
+    },
+    {
+      "id": 16,
+      "name": "��言收集者",
+      "description": "上传并通过审核 5 个方言手语",
+      "icon": "🗺️",
+      "target_value": 5,
+      "type": "contribution"
+    },
+    {
+      "id": 17,
+      "name": "方言研究者",
+      "description": "上传并通过审核 10 个方言手语",
+      "icon": "🔬",
+      "target_value": 10,
+      "type": "contribution"
+    },
+    {
+      "id": 18,
+      "name": "社区新星",
+      "description": "发布 1 条动态",
+      "icon": "🌱",
+      "target_value": 1,
+      "type": "contribution"
+    },
+    {
+      "id": 19,
+      "name": "社区达人",
+      "description": "发布 10 条动态",
+      "icon": "🌻",
+      "target_value": 10,
+      "type": "contribution"
+    },
+    {
+      "id": 20,
+      "name": "社交之星",
+      "description": "获得 50 次点赞",
+      "icon": "👍",
+      "target_value": 50,
+      "type": "contribution"
+    },
+    {
+      "id": 21,
+      "name": "社交达人",
+      "description": "获得 200 次点赞",
+      "icon": "❤️",
+      "target_value": 200,
+      "type": "contribution"
+    },
+    {
+      "id": 22,
+      "name": "测评入门",
+      "description": "完成第一次测评",
+      "icon": "📝",
+      "target_value": 1,
+      "type": "practice"
+    },
+    {
+      "id": 23,
+      "name": "测评达人",
+      "description": "通过 5 次测评",
+      "icon": "🎓",
+      "target_value": 5,
+      "type": "practice"
+    },
+    {
+      "id": 24,
+      "name": "满分学员",
+      "description": "测评获得满分",
+      "icon": "💯",
+      "target_value": 1,
+      "type": "practice"
+    }
+  ],
+  "badges": [
+    {
+      "id": 1,
+      "name": "入门勋章",
+      "description": "达到等级 1",
+      "icon": "🥉"
+    },
+    {
+      "id": 2,
+      "name": "初学勋章",
+      "description": "达到等级 2",
+      "icon": "🥈"
+    },
+    {
+      "id": 3,
+      "name": "进阶勋章",
+      "description": "达到等级 3",
+      "icon": "🥇"
+    },
+    {
+      "id": 4,
+      "name": "熟练勋章",
+      "description": "达到等级 4",
+      "icon": "🏅"
+    },
+    {
+      "id": 5,
+      "name": "精通勋章",
+      "description": "达到等级 5",
+      "icon": "🏆"
+    },
+    {
+      "id": 6,
+      "name": "专家勋章",
+      "description": "达到等级 6",
+      "icon": "💎"
+    },
+    {
+      "id": 7,
+      "name": "大师勋章",
+      "description": "达到等级 7",
+      "icon": "👑"
+    },
+    {
+      "id": 8,
+      "name": "宗师勋章",
+      "description": "达到等级 8",
+      "icon": "🌟"
+    }
+  ],
+  "level_config": [
+    {"level": 1, "name": "入门", "min_exp": 0, "icon": "🥉"},
+    {"level": 2, "name": "初学", "min_exp": 100, "icon": "🥈"},
+    {"level": 3, "name": "进阶", "min_exp": 300, "icon": "🥇"},
+    {"level": 4, "name": "熟练", "min_exp": 600, "icon": "🏅"},
+    {"level": 5, "name": "精通", "min_exp": 1000, "icon": "🏆"},
+    {"level": 6, "name": "专家", "min_exp": 2000, "icon": "💎"},
+    {"level": 7, "name": "大师", "min_exp": 5000, "icon": "👑"},
+    {"level": 8, "name": "宗师", "min_exp": 10000, "icon": "🌟"}
+  ],
+  "points_rules": [
+    {"action": "daily_login", "points": 5, "description": "每日登录"},
+    {"action": "daily_checkin", "points": 2, "description": "每日签到"},
+    {"action": "learn_word", "points": 2, "description": "学习一个词汇"},
+    {"action": "practice", "points": 1, "description": "完成一次练习"},
+    {"action": "review", "points": 1, "description": "完成一次复习"},
+    {"action": "post", "points": 5, "description": "发布动态"},
+    {"action": "comment", "points": 2, "description": "发表评论"},
+    {"action": "dialect_approved", "points": 10, "description": "方言审核通过"},
+    {"action": "test_pass", "points": 5, "description": "通过测评"},
+    {"action": "achievement_unlock", "points": 3, "description": "解锁成就"},
+    {"action": "exchange_product", "points": -100, "description": "兑换商品"}
+  ],
+  "shop_products": [
+    {"name": "专属头像框", "description": "在社区动态中展示独特的头像框", "icon": "🖼️", "price": 100, "stock": -1},
+    {"name": "手语学习资料包", "description": "包含100个手语词汇的学习资料", "icon": "📚", "price": 200, "stock": 50},
+    {"name": "VIP会员 7 天", "description": "享受VIP会员特权7天", "icon": "👑", "price": 300, "stock": -1}
+  ]
+}

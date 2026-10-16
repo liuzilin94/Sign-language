@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>掌言 Logo 设计预览</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "PingFang SC", "Microsoft YaHei", -apple-system, sans-serif;
+      background: #F8FAFC;
+      min-height: 100vh;
+      padding: 60px 40px;
+      color: #0F172A;
+    }
+    .header { text-align: center; margin-bottom: 60px; }
+    .header h1 { font-size: 36px; font-weight: 800; margin-bottom: 12px; }
+    .header p { font-size: 14px; color: #64748B; letter-spacing: 1px; }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+      gap: 32px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .card {
+      background: #FFFFFF;
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+      border: 1px solid #E2E8F0;
+    }
+    .card.dark { background: #0F172A; border-color: #0F172A; }
+    .card-title {
+      font-size: 12px;
+      font-weight: 600;
+      color: #94A3B8;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 28px;
+    }
+    .card.dark .card-title { color: #64748B; }
+
+    .stage {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 180px;
+      padding: 24px;
+    }
+    .stage img { max-width: 100%; height: auto; }
+
+    .scenes {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      padding-top: 20px;
+      border-top: 1px dashed #E2E8F0;
+    }
+    .scene {
+      padding: 28px 16px;
+      border-radius: 14px;
+      background: #F1F5F9;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+    .scene.dark { background: #1E293B; }
+    .scene-label {
+      font-size: 11px;
+      color: #64748B;
+      letter-spacing: 1px;
+    }
+    .scene.dark .scene-label { color: #94A3B8; }
+
+    .nav-mock {
+      max-width: 720px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-left { display: flex; align-items: center; gap: 10px; }
+    .nav-left img { height: 32px; }
+    .nav-tabs { display: flex; gap: 24px; font-size: 14px; color: #475569; }
+
+    .phone-mock {
+      max-width: 280px;
+      margin: 0 auto;
+      border: 8px solid #0F172A;
+      border-radius: 32px;
+      overflow: hidden;
+      background: white;
+      padding: 12px 16px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.18);
+    }
+    .phone-status {
+      display: flex; justify-content: space-between;
+      font-size: 11px; color: #0F172A;
+      padding: 4px 0 16px;
+      font-weight: 600;
+    }
+    .phone-content { text-align: center; padding: 24px 0; }
+    .phone-content img { height: 72px; margin-bottom: 18px; }
+    .phone-title { font-size: 22px; font-weight: 800; }
+    .phone-sub { font-size: 11px; color: #64748B; letter-spacing: 2px; margin-top: 4px; }
+
+    .color-tag {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-family: monospace;
+      margin: 4px;
+    }
+    .footer { text-align: center; margin-top: 60px; color: #94A3B8; font-size: 12px; }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <h1>掌言 Logo 设计预览</h1>
+    <p>SIGN · LANGUAGE · LEARNING PLATFORM</p>
+  </div>
+
+  <div class="grid">
+
+    <!-- 设计稿 1：横向标准版（Light） -->
+    <div class="card">
+      <div class="card-title">DESIGN · V1 · 横排 · 浅色背景</div>
+      <div class="stage">
+        <img src="logo-v1.svg" alt="掌言 Logo V1" />
+      </div>
+    </div>
+
+    <!-- 设计稿 1 深色版 -->
+    <div class="card dark">
+      <div class="card-title">DESIGN · V1 · 横排 · 深色背景</div>
+      <div class="stage">
+        <img src="logo-v1-dark.svg" alt="掌言 Logo V1 Dark" />
+      </div>
+    </div>
+
+    <!-- 设计稿 2：极简线稿 -->
+    <div class="card">
+      <div class="card-title">DESIGN · V2 · 极简线稿</div>
+      <div class="stage">
+        <img src="logo-v2.svg" alt="掌言 Logo V2" />
+      </div>
+    </div>
+
+    <!-- 设计稿 2 深色 -->
+    <div class="card dark">
+      <div class="card-title">DESIGN · V2 · 极简线稿 · 深色</div>
+      <div class="stage">
+        <img src="logo-v2-dark.svg" alt="掌言 Logo V2 Dark" />
+      </div>
+    </div>
+
+    <!-- 设计稿 3：圆形印章 -->
+    <div class="card">
+      <div class="card-title">DESIGN · V3 · 圆形徽标</div>
+      <div class="stage">
+        <img src="logo-v3.svg" alt="掌言 Logo V3" style="width: 200px;" />
+      </div>
+      <div class="scenes">
+        <div class="scene"><img src="logo-v3.svg" style="width: 60px;" /><div class="scene-label">小尺寸</div></div>
+        <div class="scene"><img src="logo-v3.svg" style="width: 100px;" /><div class="scene-label">标准</div></div>
+        <div class="scene"><img src="logo-v3.svg" style="width: 140px;" /><div class="scene-label">大尺寸</div></div>
+      </div>
+    </div>
+
+    <!-- 设计稿 4：抽象手势 -->
+    <div class="card">
+      <div class="card-title">DESIGN · V4 · 手势抽象</div>
+      <div class="stage">
+        <img src="logo-v4.svg" alt="掌言 Logo V4" />
+      </div>
+    </div>
+
+    <!-- 实际场景应用 -->
+    <div class="card" style="grid-column: 1 / -1;">
+      <div class="card-title">SCENE · 应用场景展示</div>
+      <div class="nav-mock">
+        <div class="nav-left">
+          <img src="logo-v1.svg" alt="logo">
+        </div>
+        <div class="nav-tabs">
+          <span>词典</span><span>学习</span><span>社区</span><span>我的</span>
+        </div>
+      </div>
+      <div style="margin-top: 28px; display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+        <div class="phone-mock">
+          <div class="phone-status"><span>9:41</span><span>●●●</span></div>
+          <div class="phone-content">
+            <img src="logo-v3.svg" alt="">
+            <div class="phone-title">掌言</div>
+            <div class="phone-sub">SIGN · LANGUAGE</div>
+          </div>
+        </div>
+        <div style="display: flex; flex-direction: column; justify-content: center;">
+          <h3 style="font-size: 22px; margin-bottom: 12px;">设计要点</h3>
+          <p style="color: #64748B; line-height: 1.8; font-size: 14px;">
+            通过圆角方形、掌心高光、声波弧线、渐变色彩四个维度，
+            表达"掌"+"言"的双重隐喻：手掌传递手势，
+            声波放射语言 —— 与「让无声的世界被看见」的品牌理念高度契合。
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 配色 -->
+    <div class="card" style="grid-column: 1 / -1;">
+      <div class="card-title">COLOR · 品牌配色</div>
+      <div style="text-align: center;">
+        <span class="color-tag" style="background: #3B82F6; color: white;">#3B82F6 主色 · 信任蓝</span>
+        <span class="color-tag" style="background: #06B6D4; color: white;">#06B6D4 主色 · 清澈青</span>
+        <span class="color-tag" style="background: #FBBF24; color: white;">#FBBF24 辅色 · 暖橙</span>
+        <span class="color-tag" style="background: #F59E0B; color: white;">#F59E0B 辅色 · 深橙</span>
+        <span class="color-tag" style="background: #0F172A; color: white;">#0F172A 文字 · 沉墨</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">© 掌言设计预览页 · 截图保存即可获得 PNG</div>
+
+</body>
+</html>

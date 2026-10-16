@@ -1,0 +1,630 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>连续手语识别模型 - 简易识别前端</title>
+    <style>
+        :root {
+            --bg: #f4efe6;
+            --panel: rgba(255, 252, 247, 0.94);
+            --panel-strong: #fffdf8;
+            --line: rgba(94, 78, 61, 0.14);
+            --text: #2d241d;
+            --muted: #6d6156;
+            --accent: #0f766e;
+            --accent-strong: #0b5f59;
+            --accent-soft: rgba(15, 118, 110, 0.12);
+            --warn: #b45309;
+            --error: #b42318;
+            --ok: #18794e;
+            --shadow: 0 20px 40px rgba(63, 42, 22, 0.12);
+            --radius: 22px;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: "Noto Sans SC", "Microsoft YaHei", sans-serif;
+            color: var(--text);
+            background:
+                radial-gradient(circle at top left, rgba(222, 184, 135, 0.26), transparent 32%),
+                radial-gradient(circle at bottom right, rgba(15, 118, 110, 0.16), transparent 34%),
+                linear-gradient(180deg, #f8f4ec 0%, #f0e8dc 100%);
+        }
+
+        .shell {
+            width: min(1080px, calc(100% - 28px));
+            margin: 28px auto;
+        }
+
+        .hero {
+            position: relative;
+            overflow: hidden;
+            padding: 34px 30px;
+            border-radius: 30px;
+            background:
+                linear-gradient(135deg, rgba(255, 248, 238, 0.98), rgba(247, 240, 230, 0.94));
+            border: 1px solid rgba(87, 68, 52, 0.1);
+            box-shadow: var(--shadow);
+        }
+
+        .hero::after {
+            content: "";
+            position: absolute;
+            right: -40px;
+            top: -42px;
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background: rgba(15, 118, 110, 0.08);
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 9px 14px;
+            border-radius: 999px;
+            background: var(--accent-soft);
+            color: var(--accent-strong);
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+        }
+
+        h1 {
+            margin: 18px 0 10px;
+            font-size: clamp(28px, 5vw, 48px);
+            line-height: 1.08;
+        }
+
+        .hero p {
+            max-width: 680px;
+            margin: 0;
+            color: var(--muted);
+            font-size: 16px;
+            line-height: 1.8;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .card {
+            padding: 24px;
+            border-radius: var(--radius);
+            background: var(--panel);
+            border: 1px solid var(--line);
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(8px);
+        }
+
+        .card h2 {
+            margin: 0 0 14px;
+            font-size: 22px;
+        }
+
+        .hint {
+            margin: 0 0 18px;
+            color: var(--muted);
+            line-height: 1.75;
+            font-size: 14px;
+        }
+
+        .steps {
+            display: grid;
+            gap: 12px;
+            margin: 18px 0 22px;
+        }
+
+        .step {
+            display: grid;
+            grid-template-columns: 38px 1fr;
+            gap: 12px;
+            align-items: start;
+            padding: 14px;
+            border-radius: 18px;
+            background: rgba(255, 255, 255, 0.66);
+            border: 1px solid rgba(94, 78, 61, 0.08);
+        }
+
+        .step-index {
+            display: grid;
+            place-items: center;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: var(--accent);
+            color: #fff;
+            font-weight: 700;
+        }
+
+        .step strong {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 15px;
+        }
+
+        .step span {
+            color: var(--muted);
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        .status {
+            padding: 14px 16px;
+            border-radius: 16px;
+            font-size: 14px;
+            line-height: 1.7;
+            background: #f6f2ea;
+            border: 1px solid rgba(94, 78, 61, 0.14);
+            color: var(--muted);
+        }
+
+        .status.ok {
+            background: rgba(24, 121, 78, 0.08);
+            border-color: rgba(24, 121, 78, 0.24);
+            color: var(--ok);
+        }
+
+        .status.warn {
+            background: rgba(180, 83, 9, 0.08);
+            border-color: rgba(180, 83, 9, 0.24);
+            color: var(--warn);
+        }
+
+        .status.error {
+            background: rgba(180, 35, 24, 0.08);
+            border-color: rgba(180, 35, 24, 0.24);
+            color: var(--error);
+        }
+
+        .actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 18px;
+        }
+
+        button,
+        .file-label {
+            appearance: none;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+        }
+
+        button:hover,
+        .file-label:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 12px 22px rgba(20, 26, 34, 0.12);
+        }
+
+        button:disabled {
+            cursor: not-allowed;
+            opacity: 0.55;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .primary {
+            padding: 13px 18px;
+            border-radius: 14px;
+            background: var(--accent);
+            color: #fff;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .secondary {
+            padding: 13px 18px;
+            border-radius: 14px;
+            background: #efe6d8;
+            color: var(--text);
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .file-panel {
+            margin-top: 20px;
+            padding: 18px;
+            border-radius: 18px;
+            border: 1px dashed rgba(15, 118, 110, 0.36);
+            background: rgba(15, 118, 110, 0.05);
+        }
+
+        .file-label {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 18px;
+            border-radius: 14px;
+            background: #ffffff;
+            color: var(--accent-strong);
+            font-weight: 700;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        .file-meta {
+            margin-top: 14px;
+            padding: 14px;
+            border-radius: 14px;
+            background: rgba(255, 255, 255, 0.88);
+            border: 1px solid rgba(94, 78, 61, 0.08);
+            color: var(--muted);
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        .result-box {
+            display: grid;
+            gap: 14px;
+        }
+
+        .result-main {
+            padding: 18px;
+            border-radius: 20px;
+            background:
+                linear-gradient(135deg, rgba(15, 118, 110, 0.12), rgba(255, 255, 255, 0.94));
+            border: 1px solid rgba(15, 118, 110, 0.18);
+        }
+
+        .result-label {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+
+        .result-text {
+            margin-top: 10px;
+            font-size: clamp(26px, 4vw, 40px);
+            line-height: 1.18;
+            font-weight: 800;
+            word-break: break-word;
+        }
+
+        .metrics {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+        }
+
+        .metric {
+            padding: 16px;
+            border-radius: 16px;
+            background: var(--panel-strong);
+            border: 1px solid rgba(94, 78, 61, 0.08);
+        }
+
+        .metric-title {
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .metric-value {
+            margin-top: 8px;
+            font-size: 21px;
+            font-weight: 700;
+        }
+
+        details {
+            margin-top: 8px;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(94, 78, 61, 0.1);
+            overflow: hidden;
+        }
+
+        summary {
+            cursor: pointer;
+            padding: 14px 16px;
+            font-weight: 700;
+        }
+
+        pre {
+            margin: 0;
+            padding: 0 16px 16px;
+            overflow: auto;
+            color: #2f3b44;
+            font-size: 13px;
+            line-height: 1.65;
+        }
+
+        .log-list {
+            display: grid;
+            gap: 10px;
+            max-height: 280px;
+            overflow: auto;
+        }
+
+        .log-item {
+            padding: 12px 14px;
+            border-radius: 14px;
+            background: rgba(255, 255, 255, 0.84);
+            border: 1px solid rgba(94, 78, 61, 0.08);
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.65;
+        }
+
+        .footer-tip {
+            margin-top: 20px;
+            padding: 16px 18px;
+            border-radius: 16px;
+            background: rgba(255, 251, 243, 0.92);
+            border: 1px solid rgba(94, 78, 61, 0.1);
+            color: var(--muted);
+            font-size: 14px;
+            line-height: 1.8;
+        }
+
+        @media (max-width: 880px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero {
+                padding: 26px 20px;
+            }
+
+            .card {
+                padding: 20px;
+            }
+
+            .metrics {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="shell">
+        <section class="hero">
+            <div class="badge">本地演示页 / 直接显示识别结果</div>
+            <h1>连续手语识别模型</h1>
+            <p>这个页面专门给最终交付版使用。先启动模型服务，再上传一个视频文件，就能直接看到识别文本、置信度和接口返回结果。</p>
+        </section>
+
+        <section class="grid">
+            <div class="card">
+                <h2>上传并识别</h2>
+                <p class="hint">这是一页够轻量的本地前端，不需要额外安装前端框架。页面会调用本地模型接口 <code>http://127.0.0.1:5001/api</code>。</p>
+
+                <div class="steps">
+                    <div class="step">
+                        <div class="step-index">1</div>
+                        <div>
+                            <strong>先启动模型服务</strong>
+                            <span>先双击 <code>双击启动模型服务.bat</code>，看到 5001 端口就绪后再回来操作这个页面。</span>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-index">2</div>
+                        <div>
+                            <strong>连接模型并上传视频</strong>
+                            <span>可以先点“检查并初始化模型”，也可以直接选视频后点“开始识别”，页面会自动尝试初始化。</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="serviceStatus" class="status">等待连接模型服务。</div>
+
+                <div class="actions">
+                    <button id="initBtn" class="secondary" type="button">检查并初始化模型</button>
+                    <button id="predictBtn" class="primary" type="button">开始识别</button>
+                </div>
+
+                <div class="file-panel">
+                    <label class="file-label" for="videoInput">选择视频文件</label>
+                    <input id="videoInput" type="file" accept="video/*">
+                    <div id="fileMeta" class="file-meta">尚未选择视频文件。</div>
+                </div>
+
+                <div class="footer-tip">
+                    如果识别按钮点了没反应，通常是模型服务还没启动，或者第一次依赖安装还没完成。服务窗口里出现“模型服务 5001 已就绪”后，再回来识别最稳。
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>识别结果</h2>
+                <div class="result-box">
+                    <div class="result-main">
+                        <div class="result-label">识别文本</div>
+                        <div id="resultText" class="result-text">等待识别</div>
+                    </div>
+
+                    <div class="metrics">
+                        <div class="metric">
+                            <div class="metric-title">置信度</div>
+                            <div id="confidenceValue" class="metric-value">--</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-title">模型状态</div>
+                            <div id="predictorValue" class="metric-value">未初始化</div>
+                        </div>
+                    </div>
+
+                    <details>
+                        <summary>查看原始返回 JSON</summary>
+                        <pre id="rawJson">{}</pre>
+                    </details>
+                </div>
+            </div>
+        </section>
+
+        <section class="card" style="margin-top: 20px;">
+            <h2>运行日志</h2>
+            <div id="logList" class="log-list"></div>
+        </section>
+    </div>
+
+    <script>
+        const API_BASE = "http://127.0.0.1:5001/api";
+        const serviceStatus = document.getElementById("serviceStatus");
+        const resultText = document.getElementById("resultText");
+        const confidenceValue = document.getElementById("confidenceValue");
+        const predictorValue = document.getElementById("predictorValue");
+        const rawJson = document.getElementById("rawJson");
+        const logList = document.getElementById("logList");
+        const videoInput = document.getElementById("videoInput");
+        const fileMeta = document.getElementById("fileMeta");
+        const initBtn = document.getElementById("initBtn");
+        const predictBtn = document.getElementById("predictBtn");
+
+        function addLog(message) {
+            const time = new Date().toLocaleTimeString("zh-CN", { hour12: false });
+            const item = document.createElement("div");
+            item.className = "log-item";
+            item.textContent = `[${time}] ${message}`;
+            logList.prepend(item);
+        }
+
+        function setStatus(text, type = "") {
+            serviceStatus.className = `status${type ? " " + type : ""}`;
+            serviceStatus.textContent = text;
+        }
+
+        function formatSize(size) {
+            if (!size && size !== 0) return "--";
+            const units = ["B", "KB", "MB", "GB"];
+            let value = size;
+            let unitIndex = 0;
+            while (value >= 1024 && unitIndex < units.length - 1) {
+                value /= 1024;
+                unitIndex += 1;
+            }
+            return `${value.toFixed(unitIndex === 0 ? 0 : 2)} ${units[unitIndex]}`;
+        }
+
+        function formatConfidence(value) {
+            if (typeof value !== "number" || Number.isNaN(value)) return "--";
+            return `${(value * 100).toFixed(2)}%`;
+        }
+
+        async function initPredictor() {
+            setStatus("正在连接模型服务并初始化预测器...", "warn");
+            addLog("开始初始化预测器。");
+
+            const response = await fetch(`${API_BASE}/init-predictor`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ model_type: "cnn_lstm" })
+            });
+
+            const data = await response.json();
+            rawJson.textContent = JSON.stringify(data, null, 2);
+
+            if (!response.ok || !data.success) {
+                predictorValue.textContent = "初始化失败";
+                setStatus(`模型初始化失败：${data.message || data.error || "未知错误"}`, "error");
+                addLog(`预测器初始化失败：${data.message || data.error || "未知错误"}`);
+                throw new Error(data.message || data.error || "预测器初始化失败");
+            }
+
+            predictorValue.textContent = data.predictor_impl === "real" ? "真实模型" : "非真实模型";
+            setStatus("模型服务连接成功，预测器已初始化。", "ok");
+            addLog(`预测器初始化成功，当前实现：${data.predictor_impl || "unknown"}`);
+            return data;
+        }
+
+        async function predictVideo(file) {
+            const formData = new FormData();
+            formData.append("video", file);
+
+            const response = await fetch(`${API_BASE}/predict-video`, {
+                method: "POST",
+                body: formData
+            });
+
+            const data = await response.json();
+            rawJson.textContent = JSON.stringify(data, null, 2);
+
+            if (!response.ok || !data.success) {
+                setStatus(`视频识别失败：${data.error || data.message || "未知错误"}`, "error");
+                addLog(`视频识别失败：${data.error || data.message || "未知错误"}`);
+                throw new Error(data.error || data.message || "视频识别失败");
+            }
+
+            resultText.textContent = data.result || "未返回识别文本";
+            confidenceValue.textContent = formatConfidence(data.confidence);
+            predictorValue.textContent = data.predictor_impl === "real" ? "真实模型" : (data.predictor_impl || "未知");
+            setStatus("识别完成，可以直接查看结果。", "ok");
+            addLog(`识别完成：${data.result || "未返回识别文本"}`);
+            return data;
+        }
+
+        function updateFileMeta() {
+            const file = videoInput.files[0];
+            if (!file) {
+                fileMeta.textContent = "尚未选择视频文件。";
+                return;
+            }
+
+            fileMeta.innerHTML =
+                `已选择文件：<strong>${file.name}</strong><br>` +
+                `文件大小：${formatSize(file.size)}<br>` +
+                `文件类型：${file.type || "未知类型"}`;
+        }
+
+        async function runPredictionFlow() {
+            const file = videoInput.files[0];
+            if (!file) {
+                setStatus("请先选择一个视频文件。", "warn");
+                addLog("用户尝试识别，但尚未选择文件。");
+                return;
+            }
+
+            initBtn.disabled = true;
+            predictBtn.disabled = true;
+            resultText.textContent = "识别中...";
+            confidenceValue.textContent = "--";
+
+            try {
+                await initPredictor();
+                setStatus("预测器准备完成，正在上传并识别视频...", "warn");
+                addLog(`开始上传视频：${file.name}`);
+                await predictVideo(file);
+            } catch (error) {
+                if (!resultText.textContent || resultText.textContent === "识别中...") {
+                    resultText.textContent = "识别失败";
+                }
+            } finally {
+                initBtn.disabled = false;
+                predictBtn.disabled = false;
+            }
+        }
+
+        videoInput.addEventListener("change", updateFileMeta);
+
+        initBtn.addEventListener("click", async () => {
+            initBtn.disabled = true;
+            predictBtn.disabled = true;
+            try {
+                await initPredictor();
+            } catch (error) {
+            } finally {
+                initBtn.disabled = false;
+                predictBtn.disabled = false;
+            }
+        });
+
+        predictBtn.addEventListener("click", runPredictionFlow);
+
+        addLog("页面已加载，等待连接模型服务。");
+    </script>
+</body>
+</html>

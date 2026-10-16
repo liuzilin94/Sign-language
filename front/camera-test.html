@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>摄像头测试</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background: #1a1a1a;
+      color: #fff;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    h1 {
+      color: #667eea;
+    }
+    video {
+      width: 100%;
+      max-width: 640px;
+      border-radius: 12px;
+      background: #000;
+    }
+    button {
+      padding: 12px 24px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin: 5px;
+    }
+    .btn-start {
+      background: #667eea;
+      color: #fff;
+    }
+    .btn-stop {
+      background: #f56c6c;
+      color: #fff;
+    }
+    .log {
+      background: #2a2a2a;
+      border-radius: 8px;
+      padding: 15px;
+      margin-top: 20px;
+      font-family: monospace;
+      font-size: 13px;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+    .log-entry {
+      margin: 5px 0;
+      padding: 5px;
+      border-bottom: 1px solid #333;
+    }
+    .log-entry.error {
+      color: #f56c6c;
+    }
+    .log-entry.success {
+      color: #67c23a;
+    }
+    .log-entry.info {
+      color: #409eff;
+    }
+    .status {
+      display: inline-block;
+      padding: 5px 15px;
+      border-radius: 20px;
+      font-size: 14px;
+      margin: 10px 0;
+    }
+    .status.inactive {
+      background: #909399;
+    }
+    .status.active {
+      background: #67c23a;
+    }
+    .status.error {
+      background: #f56c6c;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>摄像头测试页面</h1>
+
+    <div>
+      <span id="statusText" class="status inactive">未连接</span>
+    </div>
+
+    <div style="margin: 15px 0;">
+      <button class="btn-start" onclick="startCamera()">开启摄像头</button>
+      <button class="btn-stop" onclick="stopCamera()">关闭摄像头</button>
+    </div>
+
+    <video id="testVideo" autoplay playsinline muted></video>
+
+    <div class="log" id="logContainer">
+      <div class="log-entry info">等待操作...</div>
+    </div>
+  </div>
+
+  <script>
+    let mediaStream = null;
+    const video = document.getElementById('testVideo');
+    const logContainer = document.getElementById('logContainer');
+    const statusText = document.getElementById('statusText');
+
+    function log(message, type = 'info') {
+      console.log(message);
+      const entry = document.createElement('div');
+      entry.className = `log-entry ${type}`;
+      entry.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+      logContainer.appendChild(entry);
+      logContainer.scrollTop = logContainer.scrollHeight;
+    }
+
+    function updateStatus(text, type) {
+      statusText.textContent = text;
+      statusText.className = `status ${type}`;
+    }
+
+    async function startCamera() {
+      log('请求开启摄像头...');
+
+      // 如果已有流，先停止
+      if (mediaStream) {
+        log('停止旧的媒体流...');
+        mediaStream.getTracks().forEach(track => track.stop());
+        mediaStream = null;
+      }
+
+      try {
+        log('调用 getUserMedia...');
+
+        const constraints = {
+          video: {
+            width: { ideal: 640 },
+            height: { ideal: 480 },
+            facingMode: 'user'
+          },
+          audio: false
+        };
+
+        log('constraints: ' + JSON.stringify(constraints));
+
+        mediaStream = await navigator.mediaDevices.getUserMedia(constraints);
+
+        log('getUserMedia 成功!', 'success');
+        log('stream id: ' + mediaStream.id, 'success');
+
+        // 检查视频轨道
+        const videoTrack = mediaStream.getVideoTracks()[0];
+        if (videoTrack) {
+          log('视频轨道 label: ' + videoTrack.label, 'info');
+          log('视频轨道 enabled: ' + videoTrack.enabled, 'info');
+          log('视频轨道 readyState: ' + videoTrack.readyState, 'info');
+          log('视频轨道 settings: ' + JSON.stringify(videoTrack.getSettings()), 'info');
+        }
+
+        // 检查浏览器权限状态
+        if (videoTrack.getConstraints) {
+          log('请求的 constraints: ' + JSON.stringify(videoTrack.getConstraints()), 'info');
+        }
+
+        // 绑定到 video 元素
+        video.srcObject = mediaStream;
+        log('已绑定 srcObject 到 video 元素');
+
+        // 监听事件
+        video.onloadedmetadata = () => {
+          log('视频元数据加载完成: ' + video.videoWidth + 'x' + video.videoHeight, 'success');
+        };
+
+        video.onplay = () => {
+          log('视频开始播放', 'success');
+        };
+
+        video.onerror = (e) => {
+          log('视频错误: ' + (e.message || '未知错误'), 'error');
+        };
+
+        // 尝试播放
+        await video.play();
+        log('play() 成功!', 'success');
+        log('video readyState: ' + video.readyState, 'info');
+        log('video paused: ' + video.paused, 'info');
+
+        updateStatus('已连接', 'active');
+        log('摄像头开启成功!', 'success');
+
+      } catch (error) {
+        log('错误: ' + error.name + ' - ' + error.message, 'error');
+        updateStatus('错误', 'error');
+
+        if (error.name === 'NotAllowedError') {
+          log('提示: 请在浏览器设置中允许访问摄像头', 'error');
+        } else if (error.name === 'NotFoundError') {
+          log('提示: 未找到摄像头设备', 'error');
+        } else if (error.name === 'NotReadableError') {
+          log('提示: 摄像头被其他程序占用', 'error');
+        }
+      }
+    }
+
+    function stopCamera() {
+      log('请求关闭摄像头...');
+
+      if (mediaStream) {
+        mediaStream.getTracks().forEach(track => {
+          log('停止轨道: ' + track.kind + ' - ' + track.label);
+          track.stop();
+        });
+        mediaStream = null;
+      }
+
+      video.srcObject = null;
+      video.src = '';
+      video.load();
+
+      updateStatus('未连接', 'inactive');
+      log('摄像头已关闭', 'info');
+    }
+
+    // 页面加载时检查浏览器支持
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      log('错误: 浏览器不支持 getUserMedia API', 'error');
+      log('提示: 请使用 Chrome、Firefox、Edge 或 Safari', 'error');
+    } else {
+      log('浏览器支持 getUserMedia API', 'success');
+    }
+  </script>
+</body>
+</html>

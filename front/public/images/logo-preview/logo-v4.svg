@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 100" fill="none">
+  <defs>
+    <linearGradient id="v4Grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3B82F6"/>
+      <stop offset="50%" stop-color="#06B6D4"/>
+      <stop offset="100%" stop-color="#10B981"/>
+    </linearGradient>
+  </defs>
+
+  <g stroke="url(#v4Grad)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <path d="M 38 76 L 38 60"/>
+    <path d="M 38 60 Q 30 56 26 44 Q 24 38 28 36 Q 32 34 36 42 L 38 50"/>
+    <path d="M 38 60 Q 38 38 40 22 Q 42 16 46 18 Q 48 22 46 32 L 44 56"/>
+    <path d="M 44 60 Q 46 36 50 18 Q 52 12 56 14 Q 58 18 56 28 L 52 56"/>
+    <path d="M 52 60 Q 56 40 60 28 Q 62 24 66 26 Q 68 30 64 38 L 58 56"/>
+    <path d="M 58 60 Q 64 46 68 38 Q 70 36 72 38 Q 74 42 70 48 L 64 56"/>
+  </g>
+
+  <g fill="#FBBF24">
+    <circle cx="88" cy="42" r="3"/>
+    <circle cx="98" cy="50" r="3"/>
+    <circle cx="88" cy="58" r="3"/>
+  </g>
+
+  <text x="118" y="58" font-family="sans-serif"
+        font-size="44" font-weight="800" fill="#0F172A" letter-spacing="4">ZHANGYAN</text>
+
+  <text x="120" y="80" font-family="sans-serif"
+        font-size="10" font-weight="500" fill="#64748B" letter-spacing="4">SIGN LANGUAGE</text>
+</svg>

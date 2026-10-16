@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 100" fill="none">
+  <defs>
+    <linearGradient id="handGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3B82F6"/>
+      <stop offset="100%" stop-color="#06B6D4"/>
+    </linearGradient>
+    <linearGradient id="accentGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FBBF24"/>
+      <stop offset="100%" stop-color="#F59E0B"/>
+    </linearGradient>
+  </defs>
+
+  <circle cx="50" cy="50" r="42" fill="#F0F9FF"/>
+
+  <rect x="22" y="22" width="56" height="56" rx="16" fill="url(#handGrad)"/>
+
+  <rect x="28" y="28" width="34" height="22" rx="11" fill="white" fill-opacity="0.22"/>
+
+  <g stroke="url(#accentGrad)" stroke-width="3.5" stroke-linecap="round" fill="none">
+    <path d="M 70 38 Q 80 38 80 50"/>
+    <path d="M 70 50 Q 84 50 84 50"/>
+    <path d="M 70 62 Q 80 62 80 50"/>
+  </g>
+
+  <text x="110" y="58" font-family="sans-serif"
+        font-size="42" font-weight="800" fill="#0F172A" letter-spacing="3">ZHANGYAN</text>
+
+  <text x="112" y="80" font-family="sans-serif"
+        font-size="10" font-weight="500" fill="#64748B" letter-spacing="4">SIGN LANGUAGE LEARNING</text>
+</svg>

@@ -1,0 +1,306 @@
+# 掌言手语 — 中国手语学习与识别平台
+
+## 一、项目架构
+
+```
+csl-recognition/
+└── recognition/
+    ├── front/              # Vue 3 前端 (端口由 Vite 管理)
+    ├── models/             # PyTorch AI 模型定义
+    ├── data/               # 数据处理与特征提取
+    ├── inference/          # 模型推理核心
+    ├── config/             # 配置参数
+    ├── ui_plus.py          # Flask 后端 + PyQt5 桌面 GUI (端口 5001)
+    ├── start_model_service.py  # 模型服务启动器
+    ├── train_isolated.py   # 模型训练脚本
+    ├── dataset/            # 语料数据
+    └── requirements.txt    # Python 依赖
+```
+
+## 二、技术栈概览
+
+### 2.1 后端技术栈 (Python)
+
+| 类别 | 技术 | 说明 |
+|------|------|------|
+| Web 框架 | Flask 3.x | RESTful API 服务 |
+| 跨域支持 | Flask-Cors | 前后端分离跨域 |
+| 深度学习 | PyTorch 2.7 | CNN-LSTM、BiLSTM、GRU、Transformer |
+| 手部检测 | MediaPipe 0.10 | 提取 84 维手部关键点特征 |
+| 视频处理 | OpenCV 4.11 | 视频帧读取与处理 |
+| 数据处理 | Pandas + NumPy | 数据整理与计算 |
+| 训练监控 | TensorBoard | 训练过程可视化 |
+| 桌面 GUI | PyQt5 | 独立桌面客户端界面 |
+
+### 2.2 前端技术栈 (Vue 3)
+
+| 类别 | 技术 | 说明 |
+|------|------|------|
+| 核心框架 | Vue 3 | 组合式 API (`<script setup>`) |
+| 构建工具 | Vite 5 | 快速热更新和构建 |
+| UI 组件库 | Element Plus 2.6 | 弹窗、表单、轮播等组件 |
+| 状态管理 | Pinia 2.1 | 用户信息、学习数据、设置状态 |
+| 路由 | Vue Router 4 | SPA 页面导航 |
+| HTTP 客户端 | Axios 1.6 | 代理到后端 `/api` |
+| 3D 渲染 | Three.js 0.162 | 数字人 3D 手语动画 |
+| 图表 | ECharts 5.5 | 学习数据可视化 |
+| 样式 | Sass + CSS3 | Scoped 组件样式 |
+
+### 2.3 代理配置
+
+```
+前端 Vite (localhost:5173) → /api/* → Flask 后端 (localhost:5001)
+```
+
+## 三、项目功能与技术实现
+
+### 3.1 首页 (/)
+
+| 子功能 | 实现方式 |
+|--------|----------|
+| Banner 轮播 | `el-carousel` 组件 + 本地静态数据 |
+| 每日一词 | `Math.random()` 本地随机选取 |
+| 精选词条轮播 | `el-carousel type="card"` + 本地静态数据 |
+| 手语科普入口 | 3 个卡片链接到 `/science` |
+
+**无后端 API 调用**，纯前端静态展示。
+
+### 3.2 手语词典 (/dictionary)
+
+| 功能 | 实现方式 |
+|------|----------|
+| 词汇列表 | `GET /api/words` → Mock 数据 |
+| 多维筛选 | `el-select` 联动 + 前端过滤 |
+| 视图切换 | 网格/列表两种布局 |
+| 词汇详情弹窗 | `WordDetailDialog` 组件 |
+
+**当前为 Mock 模式**，真实接口预留。
+
+### 3.3 词汇详情 (/dictionary/:id)
+
+| 功能 | 实现方式 |
+|------|----------|
+| 手语视频展示 | `video` 标签 + 播放控制 |
+| 动作分解说明 | 手型/位置/动作/表情四要素卡片 |
+| 收藏/生词/笔记 | Pinia `useLearnStore` → localStorage |
+| 相关词汇推荐 | 前端根据分类/难度筛选 |
+| 方言手语 | `GET /api/dialects/:wordId` |
+
+### 3.4 手语练习 (/practice) — AI 识别核心
+
+技术栈：**Vue 3 + MediaDevices API + Axios + Flask + PyTorch + MediaPipe**
+
+```
+┌──────────────────────────────────────────────┐
+│ 词条选择                                      │
+│  └─ GET /api/vocabulary                       │
+│                                              │
+│ 模型初始化                                    │
+│  └─ POST /api/init-isolated                   │
+│     { model_type: 'cnn_lstm' }                │
+│                                              │
+│ 摄像头权限                                    │
+│  └─ navigator.mediaDevices.getUserMedia()    │
+│                                              │
+│ 录制 3 秒视频                                 │
+│  └─ MediaRecorder API                        │
+│                                              │
+│ 发送识别                                      │
+│  └─ POST /api/predict-isolrated               │
+│     FormData: { video Blob, target_index }   │
+│                                              │
+│ 后端处理                                      │
+│  ① opencv-python 读取视频帧                  │
+│  ② MediaPipe 检测 84 维关键点特征            │
+│  ③ PyTorch CNN-LSTM 模型推理                 │
+│  ④ 返回置信度和预测结果                       │
+│                                              │
+│ 前端展示                                      │
+│  置信度 > 50% → 判定正确/错误               │
+└──────────────────────────────────────────────┘
+```
+
+### 3.5 数字人演示 (/avatar)
+
+技术栈：**Vue 3 + Three.js + GLTFLoader + OrbitControls**
+
+| ���能 | 实现方式 |
+|------|----------|
+| 3D 模型加载 | `THREE.GLTFLoader` 加载 `.glb` 模型 |
+| 骨骼动画播放 | `THREE.AnimationMixer` + `AnimationAction` |
+| 模型切换 | 词汇 → 模型名称映射表 (如 `'你好' → 'niwo.glb'`) |
+| 相机控制 | `OrbitControls` (旋转/缩放/平移) |
+| 背景特效 | 粒子系统 / 光球 / 渐变三种 |
+| 播放控制 | 播放/暂停/重播 + 速度 0.5x/1x/1.5x |
+
+**纯前端实现**，无后端 API 调用。
+
+### 3.6 学习测评 (/assessment)
+
+| 功能 | 实现方式 |
+|------|----------|
+| 测评单元 | 本地 `testQuestions` 静态数据 |
+| 题型 | 选择题 + 视频题 |
+| 倒计时 | `setInterval` 前端计时 |
+| 评分 | 前端计算得分 |
+| 错题查看 | 答案对比标记 |
+
+### 3.7 上传方言手语 (/upload)
+
+| 功能 | 实现方式 |
+|------|----------|
+| 词条选择 | `el-select` + `wordApi.getWords()` |
+| 地区选择 | `el-cascader` 省份级联选择 |
+| 视频上传 | `el-upload` + `FormData` |
+| 上传提交 | `POST /api/uploadDialect` |
+| 审核状态 | `GET /api/upload/history` |
+
+### 3.8 社区动态 (/community)
+
+| 功能 | 实现方式 |
+|------|----------|
+| 动态列表 | `GET /api/community` |
+| 筛选排序 | 最新/最热/关注 三个 `el-radio-button` |
+| 发布动态 | `POST /api/community` (文字+图片+视频) |
+| 点赞/评论 | `POST /api/like/:id` / `POST /api/comment/:id` |
+| 关注用户 | `POST /api/follow/:userId` |
+
+### 3.9 学习任务 (/tasks)
+
+| 功能 | 实现方式 |
+|------|----------|
+| 艾宾浩斯复习 | 本地复习计划算法 + localStorage 持久化 |
+| 今日待复习 | 基于遗忘曲线的复习词筛选 |
+| 每日打卡任务 | 四个任务项 (每日一学/复习/练习/分享) |
+| 学习统计图表 | `ECharts` 柱状图展示周学习数据 |
+| 学习时长记录 | 前端计时 + localStorage 存储 |
+
+### 3.10 手语科普 (/science)
+
+| 功能 | 实现方式 |
+|------|----------|
+| 每日一词/每日一句 | 本地静态数据 |
+| 科普文章列表 | `GET /api/articles` |
+| 手语知识卡片 | 手型/位置/动作/表情四要素 |
+
+### 3.11 学习数据中心 (/data)
+
+| 功能 | 实现方式 |
+|------|----------|
+| 收藏/生词/笔记 | Pinia `useLearnStore` 读取 |
+| 学习日历热力图 | `ECharts` 热力图组件 |
+| 收藏/学习趋势 | `ECharts` 折线图 |
+| 词类分布饼图 | `ECharts` 饼图 |
+
+## 四、AI 模型体系
+
+### 4.1 模型文件
+
+```
+recognition/models/
+├── cnn_lstm_model.py    ← 练习页使用 (默认)
+├── bilstm_model.py      # 双向 LSTM + 多头注意力
+├── gru_model.py         # 轻量级门控循环单元
+├── transformer_model.py # 自注意力机制
+└── ensemble_model.py   # 多模型加权融合
+```
+
+### 4.2 模型参数
+
+| 参数 | 值 |
+|------|------|
+| 输入特征 | 84维 (42关键点 x 2只手) |
+| 时序长度 | 30帧 |
+| 隐藏层大小 | 128 |
+| 循环层数 | 2 |
+| 输出类别 | 41个手语词汇 |
+
+### 4.3 词汇表 (dataset/corpus.txt)
+
+共 40 个手语词汇，涵盖方位、属性、状态三大类：
+
+| 类别 | 词汇示例 |
+|------|----------|
+| 方位 | 来、去、到、晒、醒 |
+| 属性 | 有、没有、是、不是、属于 |
+| 尺寸 | 小、多、少、长、短 |
+| 高度 | 高、矮(低)、远、近、宽、窄 |
+| 粗细 | 粗、细(细致)、厚、薄 |
+| 轻重 | 轻、重、沉重 |
+| 软硬 | 硬、软 |
+| 深浅 | 深、浅 |
+| 快慢 | 快、慢 |
+| 温度 | 冷、热(汗)、暖(温暖、暖和) |
+| 胖瘦 | 胖(肥)、瘦、饱 |
+
+## 五、Flask API 接口
+
+| 路由 | 方法 | 功能 |
+|------|------|------|
+| `/api/init-predictor` | POST | 初始化手语识别预测器 |
+| `/api/predict-video` | POST | 视频文件手语识别 |
+| `/api/predict-webcam` | POST | 摄像头实时手语识别 |
+| `/api/init-isolated` | POST | 初始化孤立词预测器 |
+| `/api/predict-isolated` | POST | 孤立词视频识别 |
+| `/api/predict-isolated-webcam` | POST | 孤立词摄像头识别 |
+| `/api/predict-isolated-jpg` | POST | 孤立词 JPG 序列识别 |
+| `/api/vocabulary` | GET | 获取词汇表 |
+
+**服务端口**: 5001
+
+## 六、数据流向图
+
+```
+┌─────────────┐      Axios       ┌─────────────────┐
+│  Vue 前端   │ ──────────────── │  Flask 后端      │
+│  localhost  │  /api/*          │  localhost:5001  │
+└─────────────┘                  └────────┬────────┘
+       │                                  │
+       │ Three.js                         │ PyTorch
+       ↓                                  ↓
+┌─────────────┐                  ┌─────────────────┐
+│ 3D 数字人    │                  │  CNN-LSTM 模型   │
+│ GLTF 模型    │                  │  推理预测        │
+└─────────────┘                  └────────┬────────┘
+       │                                  │
+       │ MediaDevices                     │ MediaPipe
+       ↓                                  ↓
+┌─────────────┐                  ┌─────────────────┐
+│ 摄像头采集    │                  │ 84维关键点特征   │
+│ (3秒视频)    │                  │ 提取             │
+└─────────────┘                  └─────────────────┘
+```
+
+## 七、启动方式
+
+### 7.1 前端启动
+
+```bash
+cd recognition/front
+npm install
+npm run dev
+# 访问 http://localhost:5173
+```
+
+### 7.2 后端启动
+
+```bash
+cd recognition
+# 方式1: 直接运行 (同时启动 Flask API + PyQt5 GUI)
+python ui_plus.py
+
+# 方式2: 后台服务启动器 (仅 Flask API)
+python start_model_service.py
+# 监听端口: 5001
+```
+
+## 八、功能总结表
+
+| 模块 | 前端技术 | 后端技术 | 状态 |
+|------|----------|----------|------|
+| 首页/词典/科普 | Vue 3 + Element Plus | - | Mock |
+| AI 手语练习 | Vue 3 + 摄像头API | Flask + PyTorch + MediaPipe | 可用 |
+| 数字人演示 | Vue 3 + Three.js | - | 纯前端 |
+| 学习数据 | Vue 3 + ECharts | - | localStorage |
+| 社区/上传/审核 | Vue 3 + Axios | Flask | Mock |
+| PyQt5 桌面客户端 | PyQt5 | Flask + PyTorch | 独立运行 |

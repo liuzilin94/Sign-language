@@ -1,0 +1,112 @@
+# ====== Python ======
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# ====== Node / Frontend ======
+node_modules/
+dist/
+dist-ssr/
+*.local
+.vite/
+.cache/
+.next/
+.nuxt/
+.output/
+
+# ====== IDE / Editor ======
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# ====== Logs ======
+*.log
+backend/backend.log
+backend/backend.err.log
+frontend.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ====== Databases / data files ======
+# SQLite
+*.db
+*.sqlite
+*.sqlite3
+backend/instance/
+backend/data/
+*.sql
+
+# Feature caches (large pkl files from inference)
+backend/features/
+*.pkl
+
+# ====== Recognition: large binaries & datasets ======
+recognition/.venv/
+recognition/data/
+recognition/dataset/
+recognition/models/*.pth
+recognition/models/*.pt
+recognition/models/*.pkl
+recognition/checkpoints/
+recognition/features/
+recognition/logs/
+recognition/runs/
+recognition/output/
+
+# 3D model assets (.glb) - uploaded separately to avoid network reset on large push
+*.glb
+front/public/models/avatar/
+recognition/front/public/models/avatar/
+
+# ====== Deploy packages (build artifacts) ======
+deploy-package/
+server-deploy/
+frontend-deploy/
+
+# ====== User uploads / runtime data ======
+uploads/
+runtime/
+temp/
+tmp/
+*.tmp
+
+# ====== Environment / secrets ======
+.env
+.env.local
+.env.*.local
+secrets/
+*.pem
+*.key
+
+# ====== Build artifacts ======
+build/
+*.egg
+.pyc
+htmlcov/
+.coverage
+coverage/
+.tox/
+.mm/
+wheelhouse/
+
+# ====== Frontend env ======
+front/.env
+front/.env.local
+front/.env.*.local

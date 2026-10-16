@@ -1,0 +1,202 @@
+[
+  {
+    "id": 1,
+    "word": "来",
+    "demo_video_url": "/videos/来.mp4"
+  },
+  {
+    "id": 2,
+    "word": "去（出）",
+    "demo_video_url": "/videos/去.mp4"
+  },
+  {
+    "id": 3,
+    "word": "到",
+    "demo_video_url": null
+  },
+  {
+    "id": 4,
+    "word": "晒",
+    "demo_video_url": "/videos/晒.mp4"
+  },
+  {
+    "id": 5,
+    "word": "醒",
+    "demo_video_url": "/videos/醒.mp4"
+  },
+  {
+    "id": 6,
+    "word": "有",
+    "demo_video_url": null
+  },
+  {
+    "id": 7,
+    "word": "没有（无）",
+    "demo_video_url": null
+  },
+  {
+    "id": 8,
+    "word": "是",
+    "demo_video_url": null
+  },
+  {
+    "id": 9,
+    "word": "不是",
+    "demo_video_url": null
+  },
+  {
+    "id": 10,
+    "word": "属于",
+    "demo_video_url": "/videos/属于.mp4"
+  },
+  {
+    "id": 11,
+    "word": "小",
+    "demo_video_url": "/videos/小.mp4"
+  },
+  {
+    "id": 12,
+    "word": "多",
+    "demo_video_url": "/videos/多.mp4"
+  },
+  {
+    "id": 13,
+    "word": "少",
+    "demo_video_url": "/videos/少.mp4"
+  },
+  {
+    "id": 14,
+    "word": "长",
+    "demo_video_url": "/videos/长.mp4"
+  },
+  {
+    "id": 15,
+    "word": "短",
+    "demo_video_url": "/videos/短.mp4"
+  },
+  {
+    "id": 16,
+    "word": "高",
+    "demo_video_url": null
+  },
+  {
+    "id": 17,
+    "word": "矮（低）",
+    "demo_video_url": "/videos/矮.mp4"
+  },
+  {
+    "id": 18,
+    "word": "远",
+    "demo_video_url": "/videos/远.mp4"
+  },
+  {
+    "id": 19,
+    "word": "近",
+    "demo_video_url": null
+  },
+  {
+    "id": 20,
+    "word": "宽（宽广）",
+    "demo_video_url": null
+  },
+  {
+    "id": 21,
+    "word": "窄（狭）",
+    "demo_video_url": null
+  },
+  {
+    "id": 22,
+    "word": "粗",
+    "demo_video_url": null
+  },
+  {
+    "id": 23,
+    "word": "细（细致）",
+    "demo_video_url": "/videos/细.mp4"
+  },
+  {
+    "id": 24,
+    "word": "厚",
+    "demo_video_url": "/videos/厚.mp4"
+  },
+  {
+    "id": 25,
+    "word": "薄",
+    "demo_video_url": "/videos/薄.mp4"
+  },
+  {
+    "id": 26,
+    "word": "轻",
+    "demo_video_url": null
+  },
+  {
+    "id": 27,
+    "word": "重",
+    "demo_video_url": null
+  },
+  {
+    "id": 28,
+    "word": "沉重",
+    "demo_video_url": null
+  },
+  {
+    "id": 29,
+    "word": "硬",
+    "demo_video_url": null
+  },
+  {
+    "id": 30,
+    "word": "软",
+    "demo_video_url": null
+  },
+  {
+    "id": 31,
+    "word": "深",
+    "demo_video_url": null
+  },
+  {
+    "id": 32,
+    "word": "浅",
+    "demo_video_url": null
+  },
+  {
+    "id": 33,
+    "word": "快",
+    "demo_video_url": "/videos/快.mp4"
+  },
+  {
+    "id": 34,
+    "word": "慢",
+    "demo_video_url": "/videos/慢.mp4"
+  },
+  {
+    "id": 35,
+    "word": "冷",
+    "demo_video_url": "/videos/冷.mp4"
+  },
+  {
+    "id": 36,
+    "word": "热（汗）",
+    "demo_video_url": "/videos/热.mp4"
+  },
+  {
+    "id": 37,
+    "word": "暖（温暖、暖和）",
+    "demo_video_url": null
+  },
+  {
+    "id": 38,
+    "word": "胖（肥）",
+    "demo_video_url": "/videos/胖.mp4"
+  },
+  {
+    "id": 39,
+    "word": "瘦",
+    "demo_video_url": "/videos/瘦.mp4"
+  },
+  {
+    "id": 40,
+    "word": "饱",
+    "demo_video_url": null
+  }
+]

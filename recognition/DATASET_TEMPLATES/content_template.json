@@ -1,0 +1,144 @@
+{
+  "daily_sentences": [
+    {"text": "手语是聋人的母语，是他们表达自我、理解世界的桥梁。", "translation": "Sign language is the native language of deaf people, a bridge for them to express themselves and understand the world.", "category": "名言警句"},
+    {"text": "学会手语，让爱传递得更远。", "translation": "Learning sign language lets love travel further.", "category": "励志名言"},
+    {"text": "手语不仅是一种语言，更是一种连接人与人的方式。", "translation": "Sign language is not just a language, but a way to connect people.", "category": "感悟"},
+    {"text": "每一个手势都是聋人文化的瑰宝，值得我们尊重和学习。", "translation": "Every gesture is a treasure of deaf culture, worthy of our respect and learning.", "category": "文化"},
+    {"text": "沟通无障碍，世界更美好。", "translation": "Communication without barriers makes the world a better place.", "category": "理念"},
+    {"text": "手语是一种美丽的视觉语言，充满了表达力和情感。", "translation": "Sign language is a beautiful visual language full of expression and emotion.", "category": "描述"},
+    {"text": "学习手语，就是打开一扇通往聋人世界的大门。", "translation": "Learning sign language opens a door to the world of deaf people.", "category": "理念"},
+    {"text": "用双手说话，让爱在指尖流动。", "translation": "Speak with your hands, let love flow through your fingertips.", "category": "励志名言"},
+    {"text": "手语让沉默也能发出声音。", "translation": "Sign language makes silence speak.", "category": "名言警句"},
+    {"text": "尊重差异，欣赏多元，手语让世界更包容。", "translation": "Respect differences, appreciate diversity, sign language makes the world more inclusive.", "category": "理念"},
+    {"text": "手语是一种艺术，每个手势都是一幅画。", "translation": "Sign language is an art, every gesture is a painting.", "category": "描述"},
+    {"text": "学习手语，从了解聋人文化开始。", "translation": "Learning sign language starts with understanding deaf culture.", "category": "学习方法"},
+    {"text": "指尖传递的不只是信息，更是情感和温度。", "translation": "What passes through fingertips is not only information, but also emotion and warmth.", "category": "情感"},
+    {"text": "手语让每个人都能够自由表达。", "translation": "Sign language enables everyone to express themselves freely.", "category": "理念"},
+    {"text": "掌握手语，就拥有了一把打开聋人世界的钥匙。", "translation": "Mastering sign language gives you a key to the world of deaf people.", "category": "励志名言"},
+    {"text": "手语学习需要耐心和坚持，但每一次进步都值得庆祝。", "translation": "Learning sign language requires patience and persistence, but every progress is worth celebrating.", "category": "学习方法"},
+    {"text": "手语是一种双向的学习，聋人和听人可以互相帮助。", "translation": "Sign language is two-way learning, deaf and hearing people can help each other.", "category": "理念"},
+    {"text": "每一个学会的手语词汇，都是与聋人友谊的开始。", "translation": "Every sign language word learned is the beginning of friendship with deaf people.", "category": "情感"},
+    {"text": "手语让世界听到了沉默的声音。", "translation": "Sign language lets the world hear the voice of silence.", "category": "名言警句"},
+    {"text": "学习手语，不仅是为了沟通，更是为了理解。", "translation": "Learning sign language is not only for communication, but also for understanding.", "category": "理念"},
+    {"text": "手语是一种跨文化的交流方式。", "translation": "Sign language is a cross-cultural way of communication.", "category": "文化"},
+    {"text": "用手指书写，用眼神传递，用心感受。", "translation": "Write with fingers, convey with eyes, feel with heart.", "category": "描述"},
+    {"text": "手语让爱没有障碍，让沟通更加温暖。", "translation": "Sign language removes barriers to love and makes communication warmer.", "category": "情感"},
+    {"text": "学习手语是对聋人文化的尊重和传承。", "translation": "Learning sign language is respect and inheritance of deaf culture.", "category": "文化"},
+    {"text": "手语是一种视觉的艺术语言。", "translation": "Sign language is a visual artistic language.", "category": "描述"},
+    {"text": "每个手势背后都有一个故事。", "translation": "Every gesture has a story behind it.", "category": "文化"},
+    {"text": "手语让我们看到另一种美的可能。", "translation": "Sign language shows us another possibility of beauty.", "category": "感悟"},
+    {"text": "掌握手语，就是掌握了一种世界语言。", "translation": "Mastering sign language means mastering a world language.", "category": "理念"},
+    {"text": "手语是连接聋健世界的彩虹。", "translation": "Sign language is a rainbow connecting the deaf and hearing worlds.", "category": "比喻"},
+    {"text": "学习手语，从每一个简单的手势开始。", "translation": "Start learning sign language from every simple gesture.", "category": "学习方法"}
+  ],
+  "articles": [
+    {
+      "title": "中国手语的历史与发展",
+      "content": "## 起源时期\n\n中国手语的历史可以追溯到古代。在没有标准化手语的时代，聋人之间通过自然形成的手势进行交流，这些手势往往模仿日常生活中常见的事物和动作。\n\n## 形成时期\n\n20世纪初，随着西方传教士带来的手指字母和手势汉语系统，中国手语开始有了雏形。一些聋人学校开始教授手语，促进了手语的发展。\n\n## 标准化时期\n\n1980年代，中国聋人协会组织专家进行手语标准化工作，于1990年出版了《中国手语》教材。这标志着中国手语标准化进程的开始。\n\n## 现代化发展\n\n近年来，随着科技的发展，中国手语在电视手语翻译、网络手语教学等领域都有了新的发展机遇。\n\n## 未来展望\n\n中国手语的发展需要更多人的关注和参与，让聋人能够更好地融入社会。",
+      "cover_image": "/uploads/articles/history.jpg",
+      "category": "手语历史"
+    },
+    {
+      "title": "聋人文化的独特魅力",
+      "content": "## 什么是聋人文化\n\n聋人文化是指聋人群体在长期社会实践中形成的独特文化形态，包括独特的语言（手语）、价值观、传统和认同感。\n\n## 手语作为母语\n\n对于许多聋人来说，手语是他们的第一语言，是他们思考和表达的主要工具。就像听人用口语思考一样，聋人用手语进行思维。\n\n## 聋人艺术的表达\n\n聋人艺术家通过手语舞蹈、手语诗歌等形式，展现独特的艺术魅力。\n\n## 聋人社区的凝聚力\n\n聋人社区通过手语建立了紧密的联系，形成了独特的社交网络和支持系统。\n\n## 尊重与理解\n\n了解聋人文化，是尊重聋人的第一步。手语不仅是沟通工具，更是聋人文化的重要组成部分。",
+      "cover_image": "/uploads/articles/culture.jpg",
+      "category": "聋人文化"
+    },
+    {
+      "title": "手语学习的有效方法",
+      "content": "## 观看手语视频\n\n利用网络资源，观看手语教学视频。注意观察手型、位置、动作和表情四个要素。\n\n## 系统学习基础\n\n从基础词汇开始，逐步学习由简单到复杂的表达。建立扎实的词汇基础。\n\n## 勤加练习\n\n手语需要肌肉记忆，只有通过反复练习才能熟练掌握。每天坚持练习30分钟。\n\n## 与聋人交流\n\n与母语为手语的聋人交流是最好的学习方式。在交流中学习最地道的表达。\n\n## 参加社区活动\n\n参加手语角、手语比赛等活动，在实践中提高手语水平。\n\n## 使用手语思维\n\n试着用手语思考，不要先想口语再翻译成手语。这有助于形成真正的语言能力。",
+      "cover_image": "/uploads/articles/method.jpg",
+      "category": "学习方法"
+    },
+    {
+      "title": "手语的四要素",
+      "content": "## 手型（Handshape）\n\n手指的形状和排列方式。手型是区分不同手势的基本要素。\n\n示例：'你好'需要五指并拢伸直，而'谢谢'需要拇指弯曲，其余四指并拢。\n\n## 位置（Location）\n\n手势在身体上发生的具体位置。同一手型在不同位置可能表示不同含义。\n\n示例：放在额头的不同手势可以表示不同的亲属称呼。\n\n## 动作（Movement）\n\n手势的运动方式和方向。动作往往带有语义信息。\n\n示例：手掌向上和向下的动作可以表达不同含义。\n\n## 表情（Facial Expression）\n\n面部表情在聋人手语中承担着重要的语法功能。\n\n示例：疑问句需要配合眉毛上扬的表情，感叹句需要配合夸张的表情。",
+      "cover_image": "/uploads/articles/elements.jpg",
+      "category": "学习方法"
+    },
+    {
+      "title": "国际聋人日：了解聋人权益",
+      "content": "## 国际聋人日\n\n国际聋人日定于每年12月3日，旨在提高公众对聋人权益的关注。\n\n## 聋人权益的发展\n\n随着社会的进步，聋人的教育、就业、医疗等权益得到了更好的保障。\n\n## 手语的法律地位\n\n越来越多的国家和地区通过立法确认手语为官方语言之一，保障聋人使用手语的权利。\n\n## 无障碍环境\n\n手语翻译服务、字幕、手语识别技术等无障碍设施的建设，让聋人更好地融入社会。\n\n## 我们能做什么\n\n每个人都可以为聋人权益做出贡献：学习手语、了解聋人文化、在生活中给予聋人更多理解和帮助。",
+      "cover_image": "/uploads/articles/rights.jpg",
+      "category": "聋人文化"
+    },
+    {
+      "title": "手势汉语与自然手语的区别",
+      "content": "## 手势汉语\n\n手势汉语是以汉语语法为基础，用手语形式表达汉语的方式。\n\n特点：\n- 语法顺序与汉语一致\n- 每个词都有对应的手势\n- 便于与听人交流\n\n## 自然手语\n\n自然手语是聋人在长期实践中自然形成的手语，有自己独特的语法结构。\n\n特点：\n- 语法顺序与聋人自然思维一致\n- 表达更生动直观\n- 是聋人的母语\n\n## 两者的关系\n\n手势汉语和自然手语并非对立关系，而是可以互补使用。在不同场合选择合适的手语形式。\n\n## 学习建议\n\n初学者可以先学习手势汉语打基础，再逐步了解自然手语的特点，提高手语表达能力。",
+      "cover_image": "/uploads/articles/comparison.jpg",
+      "category": "学习方法"
+    }
+  ],
+  "knowledge_cards": [
+    {
+      "title": "手型基础",
+      "icon": "✋",
+      "description": "学习手语的基础：常见手型及其名称",
+      "content": "## 常用手型\n\n1. **张开手**：五指伸直并拢\n2. **握拳手**：四指弯曲握住拇指\n3. **食指伸**：食指伸直，其他弯曲\n4. **OK手**：拇指食指捏合圈\n5. **兰花手**：五指依次弯曲如兰花\n\n每个手型都有其独特的名称和用法，是构成手势的基本单元。",
+      "category": "基础"
+    },
+    {
+      "title": "位置要点",
+      "icon": "📍",
+      "description": "手势在身体各位置的含义",
+      "content": "## 身体主要位置\n\n1. **头部区域**：表示智力、情感、思想\n2. **面部区域**：表示日常、现在\n3. **胸前区域**：表示人际、情感\n4. **腹部区域**：表示过去、背后\n5. **侧面区域**：表示距离、方向\n\n同一手势在不同位置可能表达不同含义。",
+      "category": "基础"
+    },
+    {
+      "title": "动作类型",
+      "icon": "🔄",
+      "description": "手势动作的主要类型和特点",
+      "content": "## 主要动作类型\n\n1. **直线动作**：向前、向后、向上、向下\n2. **曲线动作**：画圈、波浪、摆动\n3. **接触动作**：接触身体不同部位\n4. **重复动作**：加强语义\n\n动作的方向和幅度都承载着语义信息。",
+      "category": "基础"
+    },
+    {
+      "title": "表情语法",
+      "icon": "😊",
+      "description": "手语中表情的语法功能",
+      "content": "## 表情在手语中的重要性\n\n在聋人手语中，表情不仅仅是情感的表达，更承担着语法功能。\n\n## 表情的语法功能\n\n1. **疑问句**：眉毛上扬，配合歪头\n2. **否定句**：摇头或皱眉\n3. **感叹句**：夸张表情\n4. **陈述句**：中性表情\n\n学习手语时，表情和手势同等重要。",
+      "category": "进阶"
+    }
+  ],
+  "science_videos": [
+    {
+      "title": "基础手语入门教程",
+      "description": "介绍手语学习的基本方法和入门技巧",
+      "cover_image": "/uploads/videos/cover_basics.jpg",
+      "video_url": "/uploads/videos/basics.mp4",
+      "duration": "5:30",
+      "category": "入门教程"
+    },
+    {
+      "title": "日常问候手语",
+      "description": "学习日常见面时的常用问候手语",
+      "cover_image": "/uploads/videos/cover_greeting.jpg",
+      "video_url": "/uploads/videos/greeting.mp4",
+      "duration": "3:45",
+      "category": "日常用语"
+    },
+    {
+      "title": "家庭称谓手语",
+      "description": "学习家庭成员称谓的手语表达",
+      "cover_image": "/uploads/videos/cover_family.jpg",
+      "video_url": "/uploads/videos/family.mp4",
+      "duration": "4:20",
+      "category": "日常用语"
+    },
+    {
+      "title": "数字手势教程",
+      "description": "学习1-100的数字手势表达",
+      "cover_image": "/uploads/videos/cover_numbers.jpg",
+      "video_url": "/uploads/videos/numbers.mp4",
+      "duration": "6:15",
+      "category": "基础教程"
+    },
+    {
+      "title": "情感表达手语",
+      "description": "学习表达喜怒哀乐的手语",
+      "cover_image": "/uploads/videos/cover_emotion.jpg",
+      "video_url": "/uploads/videos/emotion.mp4",
+      "duration": "5:00",
+      "category": "进阶教程"
+    }
+  ]
+}
