@@ -1,0 +1,24 @@
+@echo off
+title CSL手语识别系统 - 前端服务器
+color 0A
+echo ========================================
+echo      CSL 手语识别系统 - 前端服务器
+echo ========================================
+echo.
+echo 正在启动 Vue 开发服务器...
+echo 工作目录: %~dp0
+echo.
+
+cd /d "%~dp0"
+
+REM 激活虚拟环境
+call ..\.venv\Scripts\activate.bat
+
+REM 启动开发服务器
+echo 启动中，请稍候...
+echo.
+npm run dev
+
+echo.
+echo 服务器已停止
+pause

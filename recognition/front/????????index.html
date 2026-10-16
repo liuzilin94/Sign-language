@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <title>手语虚拟人展示</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { 
+      overflow: hidden; 
+      font-family: 'Segoe UI', 'PingFang SC', sans-serif;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    }
+    canvas { display: block; }
+
+    /* 顶部标题 */
+    .title {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: #fff;
+      font-size: 24px;
+      font-weight: 500;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+      z-index: 100;
+      pointer-events: none;
+    }
+
+    /* 控制面板 */
+    .controls {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 12px;
+      z-index: 100;
+    }
+    .btn {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 25px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      background: rgba(255,255,255,0.15);
+      color: #fff;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+    .btn:hover {
+      background: rgba(255,255,255,0.25);
+      transform: translateY(-2px);
+    }
+    .btn.active {
+      background: #4ecdc4;
+      color: #1a1a2e;
+    }
+
+    /* 背景选择器样式 */
+    .bg-selector {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(0, 0, 0, 0.6);
+      padding: 10px 16px;
+      border-radius: 8px;
+      backdrop-filter: blur(10px);
+      z-index: 100;
+    }
+
+    .bg-selector span {
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 13px;
+    }
+
+    .bg-btn {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: rgba(255, 255, 255, 0.8);
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 12px;
+      transition: all 0.2s;
+    }
+
+    .bg-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .bg-btn.active {
+      background: rgba(100, 180, 255, 0.3);
+      border-color: rgba(100, 180, 255, 0.6);
+      color: #fff;
+    }
+
+    /* 加载提示 */
+    .loading {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: #fff;
+      font-size: 18px;
+      z-index: 200;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+    .loading.hidden { display: none; }
+    .spinner {
+      width: 50px;
+      height: 50px;
+      border: 3px solid rgba(255,255,255,0.2);
+      border-top-color: #4ecdc4;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* 提示信息 */
+    .hint {
+      position: fixed;
+      bottom: 80px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: rgba(255,255,255,0.6);
+      font-size: 13px;
+      z-index: 100;
+      pointer-events: none;
+    }
+
+    /* 输入框 */
+    .input-panel {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      display: flex;
+      gap: 10px;
+      z-index: 100;
+    }
+    .input-panel input {
+      padding: 10px 16px;
+      border: none;
+      border-radius: 20px;
+      font-size: 14px;
+      background: rgba(255,255,255,0.15);
+      color: #fff;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.2);
+      outline: none;
+      width: 140px;
+      transition: all 0.3s ease;
+    }
+    .input-panel input::placeholder {
+      color: rgba(255,255,255,0.5);
+    }
+    .input-panel input:focus {
+      background: rgba(255,255,255,0.25);
+      border-color: #4ecdc4;
+    }
+    .input-panel button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 20px;
+      font-size: 14px;
+      background: #4ecdc4;
+      color: #1a1a2e;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .input-panel button:hover {
+      background: #3dbdb5;
+      transform: translateY(-1px);
+    }
+
+    /* 当前词和重新播放按钮容器 */
+    .word-container {
+      position: fixed;
+      top: 70px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      z-index: 100;
+    }
+
+    /* 当前词提示 */
+    .word-hint {
+      color: rgba(255,255,255,0.8);
+      font-size: 16px;
+      pointer-events: none;
+    }
+    .replay-btn {
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.3);
+      color: rgba(255,255,255,0.9);
+      padding: 8px 20px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 0.3s;
+    }
+    .replay-btn:hover {
+      background: rgba(255,255,255,0.25);
+    }
+  </style>
+</head>
+<body>
+  <div class="title">🤟 手语虚拟人</div>
+  
+  <div class="input-panel">
+    <input type="text" id="wordInput" placeholder="输入词句..." />
+    <button id="confirmBtn">确认</button>
+  </div>
+
+  <div class="word-container">
+    <div class="word-hint" id="wordHint"></div>
+    <button id="replayBtn" class="replay-btn" style="display:none;">🔁 重新播放</button>
+  </div>
+  
+  <div class="hint">🖱️ 鼠标左键旋转 | 滚轮缩放 | 右键平移</div>
+
+  <div class="controls">
+    <button class="btn active" id="playBtn">▶️ 播放</button>
+    <button class="btn" id="pauseBtn">⏸️ 暂停</button>
+    <button class="btn" id="resetBtn">🔄 重置视角</button>
+  </div>
+
+  <div class="bg-selector">
+    <span>背景：</span>
+    <button class="bg-btn active" data-style="gradient">渐变</button>
+    <button class="bg-btn" data-style="particles">粒子</button>
+    <button class="bg-btn" data-style="orb">光球</button>
+  </div>
+
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+    }
+  }
+  </script>
+
+  <script type="module">
+    import * as THREE from 'three'
+    import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js'
+    import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
+
+    // 场景设置
+    const scene = new THREE.Scene()
+
+    // 背景效果对象
+    let bgEffect = null
+    let bgParticles = null
+    let bgOrbs = []
+
+    // 背景切换函数
+    function setBackgroundStyle(style) {
+      // 清除现有背景
+      if (bgEffect) {
+        scene.remove(bgEffect)
+        bgEffect = null
+      }
+      if (bgParticles) {
+        scene.remove(bgParticles)
+        bgParticles = null
+      }
+      bgOrbs.forEach(orb => scene.remove(orb))
+      bgOrbs = []
+      scene.background = null
+
+      switch (style) {
+        case 'gradient':
+          scene.background = new THREE.Color(0x1a1a2e)
+          break
+        case 'particles':
+          scene.background = new THREE.Color(0x050510)
+          addParticles()
+          break
+        case 'orb':
+          scene.background = new THREE.Color(0x0a0515)
+          addOrbs()
+          break
+      }
+    }
+
+    function addParticles() {
+      const geometry = new THREE.BufferGeometry()
+      const count = 500
+      const positions = new Float32Array(count * 3)
+      for (let i = 0; i < count * 3; i++) {
+        positions[i] = (Math.random() - 0.5) * 15
+      }
+      geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3))
+      const material = new THREE.PointsMaterial({
+        color: 0x4ecdc4,
+        size: 0.05,
+        transparent: true,
+        opacity: 0.8
+      })
+      bgParticles = new THREE.Points(geometry, material)
+      scene.add(bgParticles)
+    }
+
+    function addOrbs() {
+      const colors = [0xff6b6b, 0x4ecdc4, 0xffe66d, 0x95e1d3, 0xf38181]
+      for (let i = 0; i < 5; i++) {
+        const geometry = new THREE.SphereGeometry(0.3 + Math.random() * 0.5, 32, 32)
+        const material = new THREE.MeshBasicMaterial({
+          color: colors[i],
+          transparent: true,
+          opacity: 0.3
+        })
+        const orb = new THREE.Mesh(geometry, material)
+        orb.position.set(
+          (Math.random() - 0.5) * 8,
+          (Math.random() - 0.5) * 4 + 2,
+          (Math.random() - 0.5) * 6 - 3
+        )
+        orb.userData = {
+          speed: 0.005 + Math.random() * 0.01,
+          offset: Math.random() * Math.PI * 2
+        }
+        scene.add(orb)
+        bgOrbs.push(orb)
+      }
+    }
+
+    // 初始化默认背景
+    setBackgroundStyle('gradient')
+
+    // 背景切换按钮事件
+    document.querySelectorAll('.bg-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.bg-btn').forEach(b => b.classList.remove('active'))
+        btn.classList.add('active')
+        setBackgroundStyle(btn.dataset.style)
+      })
+    })
+
+    // 相机设置
+    const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 100)
+    camera.position.set(0, 1.6, 2.0)
+
+    // 渲染器设置
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true })
+    renderer.setSize(window.innerWidth, window.innerHeight)
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+    renderer.shadowMap.enabled = true
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap
+    renderer.toneMapping = THREE.ACESFilmicToneMapping
+    renderer.toneMappingExposure = 2.5
+    document.body.appendChild(renderer.domElement)
+
+    // 轨道控制器
+    const controls = new OrbitControls(camera, renderer.domElement)
+    controls.enableDamping = true
+    controls.dampingFactor = 0.05
+    controls.minDistance = 1
+    controls.maxDistance = 10
+    controls.target.set(0, 1.3, 0)
+    controls.update()
+
+    // 灯光设置 - 人物无阴影
+    // 半球光（天空+地面自然补光）
+    const hemiLight = new THREE.HemisphereLight(0xb4c6e7, 0xc9b8a8, 1.2)
+    scene.add(hemiLight)
+
+    // 环境光 - 提亮整体
+    const ambientLight = new THREE.AmbientLight(0xfff8f0, 2.5)
+    scene.add(ambientLight)
+
+    // 主光源 - 关闭阴影
+    const mainLight = new THREE.DirectionalLight(0xffffff, 2.5)
+    mainLight.position.set(3, 5, 3)
+    mainLight.castShadow = false
+    scene.add(mainLight)
+
+    // 补光
+    const fillLight = new THREE.DirectionalLight(0xe8d5c4, 1.5)
+    fillLight.position.set(-2, 2, -2)
+    scene.add(fillLight)
+
+    // 背光
+    const backLight = new THREE.DirectionalLight(0xffffff, 1.2)
+    backLight.position.set(0, 3, -3)
+    scene.add(backLight)
+
+    // 正面补光（照亮人物脸部）
+    const frontLight = new THREE.PointLight(0xfff5eb, 3.5, 8)
+    frontLight.position.set(0, 1.6, 2.5)
+    scene.add(frontLight)
+
+    // 侧面补光 - 消除脸部阴影
+    const sideLightLeft = new THREE.PointLight(0xfff5eb, 2.0, 6)
+    sideLightLeft.position.set(-2, 1.5, 1)
+    scene.add(sideLightLeft)
+
+    const sideLightRight = new THREE.PointLight(0xfff5eb, 2.0, 6)
+    sideLightRight.position.set(2, 1.5, 1)
+    scene.add(sideLightRight)
+
+    // 地面
+    const groundGeometry = new THREE.CircleGeometry(3, 64)
+    const groundMaterial = new THREE.MeshStandardMaterial({
+      color: 0x5a5a7a,
+      roughness: 0.8,
+      metalness: 0.2
+    })
+    const ground = new THREE.Mesh(groundGeometry, groundMaterial)
+    ground.rotation.x = -Math.PI / 2
+    ground.receiveShadow = true
+    scene.add(ground)
+
+    // 模型和动画
+    let mixer = null
+    let model = null
+    let mainAction = null
+    const clock = new THREE.Clock()
+    const loader = new GLTFLoader()
+
+    // 模型映射
+    const modelMap = {
+      '我': '/models/avatar/niwo.glb',
+      '你我': '/models/avatar/niwo.glb',
+      '谢谢': '/models/avatar/xiexie1.glb'
+    }
+
+    // 默认模型
+    const defaultModel = '/models/avatar/initial.glb'
+
+    // 保存缩放信息，供切换时复用
+    let savedScale = 1.5
+
+    // 标记是否已完成初始相机定位
+    let initialCameraFramed = false
+
+    const defaultCamPos = new THREE.Vector3().copy(camera.position)
+    const defaultTarget = new THREE.Vector3().copy(controls.target)
+
+    /**
+     * 用所有 Mesh 的几何包围盒合并（世界矩阵），避免 SkinnedMesh / GLB 上 setFromObject 不准导致焦点落在脚底
+     */
+    function computeCharacterBox(object) {
+      object.updateMatrixWorld(true)
+      const box = new THREE.Box3()
+      let has = false
+      object.traverse((child) => {
+        if (!child.isMesh || !child.geometry) return
+        const geom = child.geometry
+        if (!geom.boundingBox) geom.computeBoundingBox()
+        const bb = geom.boundingBox
+        if (!bb || bb.isEmpty()) return
+        const transformed = bb.clone().applyMatrix4(child.matrixWorld)
+        if (!has) {
+          box.copy(transformed)
+          has = true
+        } else {
+          box.union(transformed)
+        }
+      })
+      if (!has) {
+        box.setFromObject(object)
+      }
+      return box
+    }
+
+    /** 根据模型包围盒把相机对准上半身（胸口附近），避免默认只看到脚 */
+    function frameUpperBody(object) {
+      const box = computeCharacterBox(object)
+      if (box.isEmpty()) return
+      const size = box.getSize(new THREE.Vector3())
+      const min = box.min
+      const max = box.max
+      const cx = (min.x + max.x) * 0.5
+      const cz = (min.z + max.z) * 0.5
+      const focusY = min.y + size.y * 0.7
+      const focus = new THREE.Vector3(cx, focusY, cz)
+      const halfVisibleY = size.y * 0.42
+      const fovRad = THREE.MathUtils.degToRad(camera.fov)
+      const distForHeight = (halfVisibleY / Math.tan(fovRad / 2)) * 1.05
+      const depth = Math.max(size.x, size.z) * 0.55
+      const back = Math.max(distForHeight, depth, 0.35)
+      const camY = focusY + size.y * 0.06
+      camera.position.set(cx, camY, cz + back)
+      controls.target.copy(focus)
+      controls.minDistance = Math.max(size.y * 0.12, 0.25)
+      controls.maxDistance = Math.max(size.y * 5, 8)
+      controls.minPolarAngle = Math.PI * 0.12
+      controls.maxPolarAngle = Math.PI * 0.52
+      controls.update()
+      // 只在首次加载时更新默认相机位置
+      if (!initialCameraFramed) {
+        defaultCamPos.copy(camera.position)
+        defaultTarget.copy(focus)
+        initialCameraFramed = true
+      }
+    }
+
+    /** 加载并显示模型，替换当前模型 */
+    function loadModel(modelFile, shouldFrame = false) {
+      // 在移除旧模型前保存用户的完整视角信息
+      const savedTarget = controls.target.clone()
+      const savedAzimuth = controls.getAzimuthalAngle()
+      const savedPolar = controls.getPolarAngle()
+      const savedMinPolar = controls.minPolarAngle
+      const savedMaxPolar = controls.maxPolarAngle
+      // 保存用户调整的实际距离
+      const savedDistance = camera.position.distanceTo(controls.target)
+      const savedMinDist = controls.minDistance
+      const savedMaxDist = controls.maxDistance
+
+      // 移除旧模型和动画
+      if (model) {
+        scene.remove(model)
+        model = null
+      }
+      if (mixer) {
+        mixer.stopAllAction()
+        mixer = null
+        mainAction = null
+      }
+
+      loader.load(
+        modelFile,
+        (gltf) => {
+          model = gltf.scene
+          model.updateMatrixWorld(true)
+
+          const box = computeCharacterBox(model)
+          const center = box.getCenter(new THREE.Vector3())
+          const size = box.getSize(new THREE.Vector3())
+
+          const maxDim = Math.max(size.x, size.y, size.z)
+          savedScale = 1.5 / maxDim
+          model.scale.setScalar(savedScale)
+
+          // 统一将模型放置在世界原点附近
+          model.position.x = -center.x * savedScale
+          model.position.y = -box.min.y * savedScale
+          model.position.z = -center.z * savedScale
+
+          scene.add(model)
+
+          // 计算新模型的焦点（上半身位置）
+          const cx = center.x * savedScale
+          const cz = center.z * savedScale
+          const focusY = -box.min.y * savedScale + size.y * 0.7
+          const focus = new THREE.Vector3(cx, focusY, cz)
+
+          if (shouldFrame) {
+            // 首次加载：自动定位
+            frameUpperBody(model)
+          } else {
+            // 切换模型：保持用户的角度和相对距离
+            // 约束极角在有效范围内
+            const clampedPolar = Math.max(savedPolar, Math.PI * 0.12)
+            const finalPolar = Math.min(clampedPolar, Math.PI * 0.52)
+
+            // 计算适合新模型的最小距离（根据模型高度）
+            const halfVisibleY = size.y * 0.42
+            const fovRad = THREE.MathUtils.degToRad(camera.fov)
+            const distForHeight = (halfVisibleY / Math.tan(fovRad / 2)) * 1.05
+            const depth = Math.max(size.x, size.z) * 0.55
+            const minRequiredDistance = Math.max(distForHeight, depth, 0.35)
+
+            // 使用用户之前的距离，但不小于新模型所需的最小距离
+            const finalDistance = Math.max(savedDistance, minRequiredDistance)
+
+            // 根据球面坐标重新设置相机位置
+            camera.position.setFromSphericalCoords(
+              finalDistance,
+              finalPolar,
+              savedAzimuth
+            )
+            camera.position.add(focus)
+
+            // 更新控制器目标
+            controls.target.copy(focus)
+
+            // 更新距离限制（基于新模型大小）
+            controls.minDistance = Math.max(size.y * 0.12, 0.25)
+            controls.maxDistance = Math.max(size.y * 5, 8)
+
+            // 保持用户之前的极角限制
+            controls.minPolarAngle = savedMinPolar
+            controls.maxPolarAngle = savedMaxPolar
+
+            controls.update()
+          }
+
+          model.traverse((child) => {
+            if (child.isMesh) {
+              child.castShadow = true
+              child.receiveShadow = true
+            }
+          })
+
+          // 动画结束后重新加载默认模型
+          if (gltf.animations && gltf.animations.length > 0) {
+            mixer = new THREE.AnimationMixer(model)
+            mainAction = mixer.clipAction(gltf.animations[0])
+            mainAction.setLoop(THREE.LoopOnce)
+            mainAction.clampWhenFinished = true
+            mainAction.play()
+            mixer.addEventListener('finished', () => {
+              loadModel(defaultModel, false)
+            })
+            isPlaying = true
+            updateButtonState()
+          }
+        },
+        (progress) => {
+          const percent = (progress.loaded / progress.total * 100).toFixed(0)
+          if (percent !== '100') console.log('加载进度:', percent + '%')
+        },
+        (error) => {
+          console.error('加载失败:', error)
+        }
+      )
+    }
+
+    // 初始化加载默认模型
+    loadModel(defaultModel, true)
+
+    // 动画状态
+    let isPlaying = true
+
+    // 控制按钮
+    const playBtn = document.getElementById('playBtn')
+    const pauseBtn = document.getElementById('pauseBtn')
+    const resetBtn = document.getElementById('resetBtn')
+
+    function updateButtonState() {
+      if (isPlaying) {
+        playBtn.classList.add('active')
+        pauseBtn.classList.remove('active')
+      } else {
+        playBtn.classList.remove('active')
+        pauseBtn.classList.add('active')
+      }
+    }
+
+    playBtn.addEventListener('click', () => {
+      if (mainAction && mixer) {
+        mixer.timeScale = 1
+        isPlaying = true
+        updateButtonState()
+      }
+    })
+
+    pauseBtn.addEventListener('click', () => {
+      if (mainAction && mixer) {
+        mixer.timeScale = 0
+        isPlaying = false
+        updateButtonState()
+      }
+    })
+
+    resetBtn.addEventListener('click', () => {
+      camera.position.copy(defaultCamPos)
+      controls.target.copy(defaultTarget)
+      controls.minDistance = 1
+      controls.maxDistance = 10
+      controls.update()
+    })
+
+    // 动画循环
+    function animate() {
+      requestAnimationFrame(animate)
+
+      const delta = clock.getDelta()
+      if (mixer) {
+        mixer.update(delta)
+      }
+
+      // 背景动画
+      if (bgParticles) {
+        bgParticles.rotation.y += 0.0005
+      }
+      if (bgOrbs.length > 0) {
+        const time = Date.now() * 0.001
+        bgOrbs.forEach(orb => {
+          orb.position.y += Math.sin(time * orb.userData.speed * 100 + orb.userData.offset) * 0.002
+          orb.position.x += Math.cos(time * orb.userData.speed * 50 + orb.userData.offset) * 0.001
+        })
+      }
+
+      controls.update()
+      renderer.render(scene, camera)
+    }
+    animate()
+
+    // 窗口大小调整
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight
+      camera.updateProjectionMatrix()
+      renderer.setSize(window.innerWidth, window.innerHeight)
+    })
+
+    // 输入框和确认按钮
+    const wordInput = document.getElementById('wordInput')
+    const confirmBtn = document.getElementById('confirmBtn')
+    const wordHint = document.getElementById('wordHint')
+    const replayBtn = document.getElementById('replayBtn')
+
+    // 记录当前词条
+    let currentWord = ''
+
+    function updateWordHint(text) {
+      if (text && text.trim()) {
+        wordHint.textContent = '当前词：' + text.trim()
+        currentWord = text.trim()
+        replayBtn.style.display = 'block'
+      } else {
+        wordHint.textContent = ''
+        currentWord = ''
+        replayBtn.style.display = 'none'
+      }
+    }
+
+    // 重新播放功能
+    function replayCurrentWord() {
+      if (currentWord && modelMap[currentWord]) {
+        loadModel(modelMap[currentWord])
+      }
+    }
+
+    replayBtn.addEventListener('click', replayCurrentWord)
+
+    function handleInput() {
+      const word = wordInput.value.trim()
+      if (modelMap[word]) {
+        loadModel(modelMap[word])
+        updateWordHint(word)
+      } else if (word === '') {
+        loadModel(defaultModel)
+        updateWordHint('')
+      }
+    }
+
+    confirmBtn.addEventListener('click', handleInput)
+
+    wordInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        handleInput()
+      }
+    })
+  </script>
+</body>
+</html>

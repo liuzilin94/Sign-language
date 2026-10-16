@@ -1,0 +1,211 @@
+﻿# 连续手语识别模型再训练说明
+
+## 1. 适用场景
+
+当前交付包保留了完整训练链路，可以使用自己的词汇表和视频数据继续训练模型。
+
+当前可用流程包括：
+
+- 数据集读取
+- 特征提取
+- 模型训练
+- 最优权重保存
+- 模型服务加载最新权重
+
+## 2. 重要说明
+
+请务必注意：
+
+- 当前训练脚本内部仍使用 `cnn_lstm` 作为默认模型类型标识
+- 当前训练链路适合基于现有标签体系继续扩展训练
+- 如果要做严格意义上的连续解码识别，需要另行改造模型结构、标签形式和解码流程
+
+## 3. 当前支持的视频格式
+
+训练脚本当前支持以下格式：
+
+- `.avi`
+- `.mp4`
+- `.mov`
+- `.mkv`
+
+## 4. 词汇表与类别数
+
+项目会从：
+
+`dataset/corpus.txt`
+
+自动统计类别数。
+
+这意味着：
+
+- 替换新的词汇表后，不需要手动修改 `num_classes`
+- 只要标签目录和 `corpus.txt` 保持一致，就可以继续训练
+
+## 5. 推荐数据组织方式
+
+推荐按下面结构准备数据：
+
+```text
+dataset/
+  corpus.txt
+  train/
+    0/
+      xxx.mp4
+      yyy.mp4
+    1/
+      zzz.mp4
+  val/
+    0/
+    1/
+  test/
+    0/
+    1/
+```
+
+说明：
+
+- `corpus.txt`：词汇表
+- `train / val / test`：训练集、验证集、测试集
+- 每个类别目录名使用数字标签，例如 `0`、`1`、`36`
+
+## 6. corpus.txt 格式
+
+`corpus.txt` 每行一个标签，格式如下：
+
+```text
+000000 你好
+000001 谢谢
+000002 再见
+```
+
+说明：
+
+- 左侧是标签编号
+- 右侧是词语或句子文本
+- 标签编号建议按顺序递增
+- 视频目录编号需与 `corpus.txt` 中编号对应
+
+例如：
+
+- 如果目录名是 `36`
+- 那么 `corpus.txt` 中应存在 `000036`
+
+## 7. 如果只有未划分的数据
+
+也可以先放成下面这种结构：
+
+```text
+dataset/
+  corpus.txt
+  0/
+    a.mp4
+    b.mp4
+  1/
+    c.mp4
+    d.mp4
+```
+
+训练脚本会自动尝试划分为：
+
+- `train`
+- `val`
+- `test`
+
+注意：
+
+- 这个过程中会移动原视频文件到新的划分目录
+- 建议客户先备份原始数据
+
+## 8. 如何开始训练
+
+### 方式一：双击启动
+
+可以直接双击：
+
+`train_model.bat`
+
+如果不传参数，默认训练：
+
+`cnn_lstm`
+
+### 方式二：命令行启动
+
+```powershell
+python start_training.py --model_type cnn_lstm --epochs 100 --batch_size 32
+```
+
+也可以直接运行原始训练脚本：
+
+```powershell
+python train.py --model_type cnn_lstm --epochs 100 --batch_size 32
+```
+
+## 9. 常用训练命令
+
+### 训练 CNN-LSTM
+
+```powershell
+python start_training.py --model_type cnn_lstm --epochs 100 --batch_size 32
+```
+
+### 训练 BiLSTM
+
+```powershell
+python start_training.py --model_type bilstm --epochs 100 --batch_size 32
+```
+
+### 训练 Transformer
+
+```powershell
+python start_training.py --model_type transformer --epochs 100 --batch_size 16
+```
+
+### 训练 GRU
+
+```powershell
+python start_training.py --model_type gru --epochs 100 --batch_size 32
+```
+
+### 查看训练参数帮助
+
+```powershell
+python start_training.py --show-train-help
+```
+
+## 10. 训练完成后模型保存位置
+
+训练完成后，最优权重会保存到：
+
+`models/`
+
+例如：
+
+- `models/best_cnn_lstm_model.pth`
+- `models/best_bilstm_model.pth`
+- `models/best_transformer_model.pth`
+- `models/best_gru_model.pth`
+
+## 11. 如何让新模型生效
+
+如果重新训练的是：
+
+`cnn_lstm`
+
+并生成了新的：
+
+`models/best_cnn_lstm_model.pth`
+
+那么只需要：
+
+1. 关闭当前模型服务
+2. 重新双击 `run.bat`
+
+模型服务就会自动加载新的权重。
+
+## 12. 关于 CSL500 数据的使用建议
+
+1. 先整理 `dataset/corpus.txt`
+2. 再按标签编号整理视频目录
+3. 先小规模试跑训练，确认标签映射正确
+4. 再进行完整训练
